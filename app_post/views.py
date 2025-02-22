@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post
 from . forms import PostForm
-
+from django.contrib.auth.models import User
 # authencations form
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 
+# messages 
+from django.contrib import messages
 
+# authencations views
 from django.contrib.auth.decorators import login_required
 
 
@@ -20,6 +23,14 @@ def home(request): # post_list for all user
 
     return render(request, 'app_post/home.html',  context)
 
+@login_required
+def my_post(request): # update a post
+    posts = Post.objects.all().order_by('-created_at')
+    context = {
+        'posts': posts,    
+        }
+    
+    return render(request, 'app_post/my_post.html',  context)
 
 @login_required
 def create_post(request): # create a new post
@@ -32,8 +43,9 @@ def create_post(request): # create a new post
             post = form.save(commit=False)
             post.author = request.user
             form.save()
+            messages.success(request, 'Post created successfully.')
         return redirect('app_post:home')
-    
+        
     context = {
         'form': form,    
         }
@@ -49,6 +61,7 @@ def update_post(request, id): # update a post
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
+            messages.warning(request, 'Post updated successfully.')
         return redirect('app_post:home')
     
     context = {
@@ -64,7 +77,7 @@ def delete_post(request, id): # delete a post
 
     # request.user = request.id
     post.delete()
-    
+    messages.warning(request, 'Post deleted')
     return redirect('app_post:home')
 
 
@@ -91,4 +104,5 @@ def sign_up(request):
 
 def logout_view(request):
     logout(request)
+    
     return redirect('app_post:home')

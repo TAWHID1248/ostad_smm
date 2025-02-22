@@ -7,6 +7,7 @@ app_name = "app_post"
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('my_post', views.my_post, name='my_post'),
     path('create_post/', views.create_post, name='create_post'),
     path('update_post/<int:id>/', views.update_post, name='update_post'),
     path('delete_post/<int:id>/', views.delete_post, name='delete_post'),
