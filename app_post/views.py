@@ -33,6 +33,17 @@ def my_post(request): # update a post
     return render(request, 'app_post/my_post.html',  context)
 
 @login_required
+def post_details(request, id):
+    posts = Post.objects.filter(id=id).order_by('-created_at')
+    # posts = get_object_or_404(Post, id=id)
+    context = {
+        'posts': posts,    
+        }
+    
+    return render(request, 'app_post/post_deatails.html',  context)
+
+
+@login_required
 def create_post(request): # create a new post
     # form
     form = PostForm()

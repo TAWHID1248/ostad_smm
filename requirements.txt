@@ -1,0 +1,1 @@
+pip install djangorestframework pillow django-crispy-forms crispy-bootstrap5 django-cleanup 

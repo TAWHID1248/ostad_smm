@@ -12,17 +12,17 @@
         </div>
         <div class="col-6 ">
             <h1 class="h1 text-center mb-3 text-light p-3 bg-info text-wrap">Your Posts </h1>
-            <a href="{% url 'app_post:create_post' %}" class="btn btn-primary my-2 float-end">Create Post</a>
+            
             
             {% if posts %}
             {% for post in posts %}
-            {% if request.user == post.author %}
+            
             <div class="custom-card mt-3 mb-2"> 
                 <div class="card" style="width: 32rem;">
                     <div class="card-body">
-                        <p class="card-title h4"><a href="{% url "app_post:post_details" post.id %}">{{post.title}}</a></p>
+                        <p class="card-title h4">{{post.title}}</p>
                         <p class="fst-italic bg-secondary p-2 text-white bg-opacity-25 badge"> post by {{post.author}}</p>
-                      <p class="card-text">{{post.caption | truncatewords:30}}</p>
+                      <p class="card-text">{{post.caption}}</p>
                     {% if request.user == post.author %}
                         <a href="{% url 'app_post:update_post' post.id %}" class="btn  btn-outline-warning float-end">Update</a>
                         <a href="{% url 'app_post:delete_post' post.id %}" class="btn  btn-outline-danger float-end">Delete</a>
@@ -30,7 +30,7 @@
                     </div>
                   </div>
             </div>
-            {% endif %}
+            
             {% endfor %}
             {% else %}
             <p>No posts found.</p>
