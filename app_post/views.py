@@ -69,9 +69,42 @@ def home(request):
 @login_required
 def my_post(request): # update a post
     posts = Post.objects.all().order_by('-created_at')
+
+     # Get filter parameters from request
+    search_query = request.GET.get('q', '')
+    sort_order = request.GET.get('sort', '-created_at')  # Default: Newest first
+    media_filter = request.GET.get('media', 'all')
+    user_filter = request.GET.get('user', '')
+
+    # Search by keyword (use the correct field)
+    if search_query:
+        posts = posts.filter(Q(title__icontains=search_query) | Q(caption__icontains=search_query))  
+
+    # Sort by date
+    if sort_order == 'oldest':
+        posts = posts.order_by('created_at')
+    else:
+        posts = posts.order_by('-created_at')
+
+    # Filter by media type
+    if media_filter == 'text-only':
+        posts = posts.filter(image='')  # Assuming `image` is a field in your model
+    elif media_filter == 'images':
+        posts = posts.exclude(image='')
+
+    # Filter by user
+    if user_filter:
+        posts = posts.filter(author__username=user_filter)
+
     context = {
-        'posts': posts,    
-        }
+        'posts': posts,
+        'search_query': search_query,
+        'sort_order': sort_order,
+        'media_filter': media_filter,
+        'user_filter': user_filter,
+    }
+
+
     
     return render(request, 'app_post/my_post.html',  context)
 

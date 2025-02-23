@@ -21,7 +21,7 @@
                 <div class="card  border-dark" style="width: 32rem;">
                     <div class="card-body">
                         <p class="card-title h4"><a href="{% url "app_post:post_details" post.id %}">{{post.title}}</a></p>
-                      <p class="fst-italic bg-secondary p-2 text-white bg-opacity-25 badge"> post by {{post.author}}</p>
+                      <p class="fst-italic bg-secondary p-2 text-white bg-opacity-25 badge"> post by {{post.author}} </p> 
                       <p class="card-text">{{post.caption | truncatewords:30}}</p>
                     {% if request.user == post.author %}
                         <a href="{% url 'app_post:update_post' post.id %}" class="btn  btn-outline-warning float-end">Update</a>
