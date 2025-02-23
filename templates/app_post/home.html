@@ -37,7 +37,25 @@
 
         </div>
         <div class="col-3">
-
+            <form method="GET" action="{% url 'app_post:home' %}">
+                <input type="text" name="q" placeholder="Search posts..." value="{{ search_query }}">
+                
+                <select name="sort">
+                    <option value="-created_at" {% if sort_order == "-created_at" %}selected{% endif %}>Newest</option>
+                    <option value="created_at" {% if sort_order == "created_at" %}selected{% endif %}>Oldest</option>
+                </select>
+            
+                <select name="media">
+                    <option value="all" {% if media_filter == "all" %}selected{% endif %}>All</option>
+                    <option value="text-only" {% if media_filter == "text-only" %}selected{% endif %}>Text Only</option>
+                    <option value="images" {% if media_filter == "images" %}selected{% endif %}>Images</option>
+                </select>
+            
+                <input type="text" name="user" placeholder="Filter by user..." value="{{ user_filter }}">
+            
+                <button type="submit">Filter</button>
+            </form>
+            
         </div>
     </div>
 
